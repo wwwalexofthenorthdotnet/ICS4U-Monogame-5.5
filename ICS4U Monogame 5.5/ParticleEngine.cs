@@ -48,7 +48,7 @@ namespace ICS4U_Monogame_5._5
             Color color = new Color((float)_generator.NextDouble(), (float)_generator.NextDouble(), (float)_generator.NextDouble());
 
             int size = _generator.Next(5, 10);
-            int TTL = 20 + _generator.Next(40);
+            int TTL = 20 + _generator.Next();
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, TTL);
         }
