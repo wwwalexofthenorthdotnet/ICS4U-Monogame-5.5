@@ -17,6 +17,11 @@ namespace ICS4U_Monogame_5._5
         private List<Texture2D> _textures;
         private bool _enabled;
 
+        private float _speed;
+
+        private bool _randomizeColor;
+        private Color _color;
+
         public bool Enabled
         {
             get { return _enabled; }
@@ -29,6 +34,10 @@ namespace ICS4U_Monogame_5._5
             set { _emitterLocation = value; }
         }
 
+        public float Speed { get { return _speed; } set { _speed = value; } }
+        public bool RandomizeColor { get { return _randomizeColor; } set { _randomizeColor = value; } }
+        public Color color { get { return _color; } set { _color = value; } }
+
         public ParticleEngine(List<Texture2D> textures, Vector2 location, bool enabled)
         {
             _emitterLocation = location;
@@ -36,19 +45,26 @@ namespace ICS4U_Monogame_5._5
             _particles = new List<Particle>();
             _generator = new Random();
             _enabled = enabled;
+            _speed = 1f;
+
+            _randomizeColor = false;
+            _color = Color.White;
         }
 
         private Particle GenerateNewParticle()
         {
             Texture2D texture = _textures[_generator.Next(_textures.Count)];
             Vector2 position = _emitterLocation;
-            Vector2 velocity = new Vector2(1f * (float)(_generator.NextDouble() * 2 - 1), 1f * (float)(_generator.NextDouble() * 2 - 1));
+            Vector2 velocity = new Vector2(_speed * (float)(_generator.NextDouble() * 2 - 1), _speed * (float)(_generator.NextDouble() * 2 - 1));
             float angle = 0;
             float angularVelocity = 0.1f * (float)(_generator.NextDouble() * 2 - 1);
-            Color color = new Color((float)_generator.NextDouble(), (float)_generator.NextDouble(), (float)_generator.NextDouble());
-
+            Color color = _color;
+            if (_randomizeColor)
+            {
+                color = new Color((float)_generator.NextDouble(), (float)_generator.NextDouble(), (float)_generator.NextDouble());
+            }
             int size = _generator.Next(5, 10);
-            int TTL = 20 + _generator.Next();
+            int TTL = 20 + _generator.Next(40);
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, TTL);
         }
@@ -62,6 +78,7 @@ namespace ICS4U_Monogame_5._5
                 {
                     _particles.Add(GenerateNewParticle());
                 }
+            }
                 for (int i = 0; i < _particles.Count; i++)
                 {
                     _particles[i].Update();
@@ -71,7 +88,7 @@ namespace ICS4U_Monogame_5._5
                         i--;
                     }
                 }
-            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
