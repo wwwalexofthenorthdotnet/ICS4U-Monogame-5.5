@@ -21,8 +21,11 @@ namespace ICS4U_Monogame_5._5
         private Color _color;
         private int _size;
         private int _TTL;
+        private int _initialTTL;
+        private float _opacity;
+        private bool _fadeOut;
 
-        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL)
+        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL, bool fadeOut)
         {
             _texture = texture;
             _position = position;
@@ -33,6 +36,9 @@ namespace ICS4U_Monogame_5._5
             _color = color;
             _size = size;
             _TTL = TTL;
+            _fadeOut = fadeOut;
+            _opacity = 1f;
+            _initialTTL = TTL;
         }
 
         public bool Dead
@@ -49,12 +55,17 @@ namespace ICS4U_Monogame_5._5
             _angle += _angularVelocity;
             _rect.Location = _position.ToPoint();
             _TTL--;
+
+            if (_fadeOut)
+            {
+                _opacity = _TTL / (float)_initialTTL;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             Vector2 origin = new Vector2(_texture.Width / 2, _texture.Height / 2);
-            spriteBatch.Draw(_texture, _rect, null, _color, _angle, origin, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_texture, _rect, null, _color * _opacity, _angle, origin, SpriteEffects.None, 0f);
 
         }
     }
