@@ -24,8 +24,10 @@ namespace ICS4U_Monogame_5._5
         private int _initialTTL;
         private float _opacity;
         private bool _fadeOut;
+        private bool _doGrow;
+        private bool _doShrink;
 
-        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL, bool fadeOut)
+        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL, bool fadeOut, bool doGrow, bool doShrink)
         {
             _texture = texture;
             _position = position;
@@ -37,6 +39,8 @@ namespace ICS4U_Monogame_5._5
             _size = size;
             _TTL = TTL;
             _fadeOut = fadeOut;
+            _doGrow = doGrow;
+            _doShrink = doShrink;
             _opacity = 1f;
             _initialTTL = TTL;
         }
@@ -59,6 +63,18 @@ namespace ICS4U_Monogame_5._5
             if (_fadeOut)
             {
                 _opacity = _TTL / (float)_initialTTL;
+            }
+
+            if (_doGrow)
+            {
+                for (int i = 0; i < _opacity; i++)
+                    _size += 1;
+            }
+
+            if (_doGrow)
+            {
+                for (int i = 0; i < _opacity; i++)
+                    _size -= 1;
             }
         }
 
