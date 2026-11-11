@@ -68,21 +68,24 @@ namespace ICS4U_Monogame_5._5
             if (_doGrow)
             {
                 for (int i = 0; i < _opacity; i++)
-                    _size += 1;
+                    _size += 2;
             }
 
-            if (_doGrow)
+            if (_doShrink)
             {
                 for (int i = 0; i < _opacity; i++)
-                    _size -= 1;
+                    _size -= 2;
             }
+
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 origin = new Vector2(_texture.Width / 2, _texture.Height / 2);
-            spriteBatch.Draw(_texture, _rect, null, _color * _opacity, _angle, origin, SpriteEffects.None, 0f);
-
+            
+                Vector2 origin = new Vector2(_texture.Width / 2, _texture.Height / 2);
+                spriteBatch.Draw(_texture, _rect, null, _color * _opacity, _angle, origin, SpriteEffects.None, 0f);
+            
         }
     }
 }

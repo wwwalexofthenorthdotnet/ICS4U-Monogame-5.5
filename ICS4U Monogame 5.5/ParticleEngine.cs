@@ -37,7 +37,15 @@ namespace ICS4U_Monogame_5._5
         private bool _doShrink;
 
         private bool _doRect;
+
+        private bool _doDirection;
         private Rectangle _spawnRect;
+
+        private Vector2 _direction;
+
+        private float _spreadAngle;
+
+        private bool _doGravity;
 
         public bool Enabled
         {
@@ -67,6 +75,11 @@ namespace ICS4U_Monogame_5._5
         public Rectangle SpawnRect { get { return _spawnRect; } set { _spawnRect = value; } }
 
         public bool DoRect { get { return _doRect; } set { _doRect = value; } }
+        public bool DoDirection { get { return _doDirection; } set { _doDirection = value; } }
+        public bool DoGravity { get { return _doGravity; } set { _doGravity = value; } }
+
+        public Vector2 Direction { get { return _direction; } set { _direction = value; } }
+        public float SpreadAngle { get { return _spreadAngle; } set { _spreadAngle = value; } }
 
         public ParticleEngine(List<Texture2D> textures, Vector2 location, bool enabled)
         {
@@ -91,6 +104,10 @@ namespace ICS4U_Monogame_5._5
 
             _angularVelocity = 1f;
 
+            _spreadAngle = 30f;
+
+            _direction = new Vector2(0, -1);
+
             _spawnRect = new Rectangle();
         }
 
@@ -98,7 +115,23 @@ namespace ICS4U_Monogame_5._5
         {
             Texture2D texture = _textures[_generator.Next(_textures.Count)];
             Vector2 position = _emitterLocation;
-            Vector2 velocity = new Vector2(_speed * (float)(_generator.NextDouble() * 2 - 1), _speed * (float)(_generator.NextDouble() * 2 - 1));
+            Vector2 velocity = new Vector2(0, 0);
+            float gravity = 1;
+            if (!_doDirection)
+                velocity = new Vector2(_speed * (float)(_generator.NextDouble() * 2 - 1), _speed * (float)(_generator.NextDouble() * 2 - 1));
+            else if (_doDirection)
+            {
+                float baseAngleRadians = (float)Math.Atan2(_direction.Y, _direction.X);
+                float spreadRadians = (float)((_generator.NextDouble() * _spreadAngle - _spreadAngle / 2.0) * (Math.PI / 180.0));
+                velocity = new Vector2(_speed * (float)Math.Cos(baseAngleRadians + spreadRadians), _speed * (float)Math.Sin((float)baseAngleRadians + spreadRadians));
+            }
+            
+
+            if  (DoGravity)
+            { 
+                velocity = Vector2.Add(velocity, new Vector2(0, gravity));
+            }
+            
             float angle = _angle;
             //float angularVelocity = 1f * (float)(_generator.NextDouble() * 2 - 1);
             float angularVelocity = 1f * _angularVelocity;
@@ -121,6 +154,7 @@ namespace ICS4U_Monogame_5._5
             {
                 position = new Vector2(_generator.Next(0, _spawnRect.Width), _generator.Next(0, _spawnRect.Height));
             }
+
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, TTL, fadeOut, doGrow, doShrink);
         }

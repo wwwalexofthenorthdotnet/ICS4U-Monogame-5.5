@@ -18,12 +18,6 @@ namespace ICS4U_Monogame_5._5
         Rectangle window;
         ParticleEngine particleEngine;
         List<Texture2D> particles;
-        bool randomizeColor = false;
-        bool fadeOut = false;
-
-        bool doGrow = false;
-        bool doShrink = false;
-        bool doRect = false;
 
         int scroll;
 
@@ -34,7 +28,7 @@ namespace ICS4U_Monogame_5._5
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+              
         }
 
         protected override void Initialize()
@@ -103,21 +97,19 @@ namespace ICS4U_Monogame_5._5
 
             // RANDOM COLOUR TOGGLE
 
-            if (keyboardState.IsKeyDown(Keys.R) && prevKeyboardState != keyboardState && !randomizeColor)
+            if (keyboardState.IsKeyDown(Keys.R) && prevKeyboardState != keyboardState && !particleEngine.RandomizeColor)
             {
                 particleEngine.RandomizeColor = true;
-                randomizeColor = true;
             }
-            else if (keyboardState.IsKeyDown(Keys.R) && prevKeyboardState != keyboardState && randomizeColor)
+            else if (keyboardState.IsKeyDown(Keys.R) && prevKeyboardState != keyboardState && particleEngine.RandomizeColor)
             {
                 particleEngine.RandomizeColor = false;
-                randomizeColor = false;
             }
 
             // SHIFT HOLD TTL
 
             scroll = mouseState.ScrollWheelValue - prevMouseState.ScrollWheelValue;
-            
+
             if (scroll < 0 && keyboardState.IsKeyDown(Keys.LeftShift))
             {
                 particleEngine.TTL += 1;
@@ -129,15 +121,13 @@ namespace ICS4U_Monogame_5._5
 
             // FADE TOGGLE
 
-            if (keyboardState.IsKeyDown(Keys.F) && prevKeyboardState != keyboardState && !fadeOut)
+            if (keyboardState.IsKeyDown(Keys.F) && prevKeyboardState != keyboardState && !particleEngine.FadeOut)
             {
                 particleEngine.FadeOut = true;
-                fadeOut = true;
             }
-            else if (keyboardState.IsKeyDown(Keys.F) && prevKeyboardState != keyboardState && fadeOut)
+            else if (keyboardState.IsKeyDown(Keys.F) && prevKeyboardState != keyboardState && particleEngine.FadeOut)
             {
                 particleEngine.FadeOut = false;
-                fadeOut = false;
             }
 
             // SIZE SHIFTER MAX
@@ -165,7 +155,7 @@ namespace ICS4U_Monogame_5._5
 
             // Angular Velocity Shifter
 
-            if (scroll < 0 && keyboardState.IsKeyDown(Keys.LeftControl) && particleEngine.AngularVelocity < particleEngine.AngularVelocity)
+            if (scroll < 0 && keyboardState.IsKeyDown(Keys.LeftControl))
             {
                 particleEngine.AngularVelocity += 1;
             }
@@ -173,58 +163,149 @@ namespace ICS4U_Monogame_5._5
             {
                 particleEngine.AngularVelocity -= 1;
             }
-            
-            
+
+
             // GROW TOGGLE
 
-            if (keyboardState.IsKeyDown(Keys.G) && prevKeyboardState != keyboardState && !doGrow)
+            if (keyboardState.IsKeyDown(Keys.G) && prevKeyboardState != keyboardState && !particleEngine.Grow)
             {
                 particleEngine.Grow = true;
-                doGrow = true;
 
-                doShrink = false;
+                particleEngine.Shrink = false;
             }
-            else if (keyboardState.IsKeyDown(Keys.G) && prevKeyboardState != keyboardState && doGrow)
+            else if (keyboardState.IsKeyDown(Keys.G) && prevKeyboardState != keyboardState && particleEngine.Grow)
             {
                 particleEngine.Grow = false;
-                doGrow = false;
             }
 
-            if (doGrow)
-                particleEngine.Grow = false;
 
 
             // SHRINK TOGGLE
 
-            if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState != keyboardState && !doShrink)
+            if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState != keyboardState && !particleEngine.Shrink)
             {
                 particleEngine.Shrink = true;
-                doShrink = true;
 
-                doGrow = false;
+                particleEngine.Grow = false;
             }
-            else if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState != keyboardState && doShrink)
+            else if (keyboardState.IsKeyDown(Keys.S) && prevKeyboardState != keyboardState && particleEngine.Shrink)
             {
                 particleEngine.Shrink = false;
-                doShrink = false;
             }
 
             // Rect Toggle
 
-            if (keyboardState.IsKeyDown(Keys.P) && prevKeyboardState != keyboardState && !doRect)
+            if (keyboardState.IsKeyDown(Keys.P) && prevKeyboardState != keyboardState && !particleEngine.DoRect)
             {
                 particleEngine.DoRect = true;
-                doRect = true;
             }
-            else if (keyboardState.IsKeyDown(Keys.P) && prevKeyboardState != keyboardState && doRect)
+            else if (keyboardState.IsKeyDown(Keys.P) && prevKeyboardState != keyboardState && particleEngine.DoRect)
             {
                 particleEngine.DoRect = false;
-                doRect = false;
+            }
+
+            // Spread Angle Shifter
+
+            if (scroll < 0 && keyboardState.IsKeyDown(Keys.LeftAlt))
+            {
+                particleEngine.SpreadAngle += 10;
+            }
+            else if (scroll > 0 && keyboardState.IsKeyDown(Keys.LeftAlt))
+            {
+                particleEngine.SpreadAngle -= 10;
+            }
+
+            // Direction Setter
+
+            if (keyboardState.IsKeyDown(Keys.Up) && prevKeyboardState != keyboardState)
+                particleEngine.Direction = new Vector2(0, -1);
+            else if (keyboardState.IsKeyDown(Keys.Left) && prevKeyboardState != keyboardState)
+                particleEngine.Direction = new Vector2(-1, 0);
+            else if (keyboardState.IsKeyDown(Keys.Right) && prevKeyboardState != keyboardState)
+                particleEngine.Direction = new Vector2(1, 0);
+            else if (keyboardState.IsKeyDown(Keys.Down) && prevKeyboardState != keyboardState)
+                particleEngine.Direction = new Vector2(0, 1);
+
+            // Direction Toggle
+
+            if (keyboardState.IsKeyDown(Keys.RightControl) && prevKeyboardState != keyboardState && !particleEngine.DoDirection)
+            {
+                particleEngine.DoDirection = true;
+            }
+            else if (keyboardState.IsKeyDown(Keys.RightControl) && prevKeyboardState != keyboardState && particleEngine.DoDirection)
+            {
+                particleEngine.DoDirection = false;
+            }
+
+            // Spread Angle Shifter
+
+            if (scroll < 0 && keyboardState.IsKeyDown(Keys.RightAlt))
+            {
+                particleEngine.Speed += 1;
+            }
+            else if (scroll > 0 && keyboardState.IsKeyDown(Keys.RightAlt))
+            {
+                particleEngine.Speed -= 1;
+            }
+
+            // Gravity Toggle
+            if (keyboardState.IsKeyDown(Keys.Y) && prevKeyboardState != keyboardState && !particleEngine.DoGravity)
+            {
+                particleEngine.DoGravity = true;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Y) && prevKeyboardState != keyboardState && particleEngine.DoGravity)
+            {
+                particleEngine.DoGravity = false;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
+            {
+                particleEngine.Enabled = true;
+                particleEngine.Speed = 1f;
+
+                particleEngine.RandomizeColor = false;
+                particleEngine.Color = Color.White;
+                particleEngine.TTL = 40;
+                particleEngine.FadeOut = false;
+
+                particleEngine.DoRect = false;
+                particleEngine.Grow = false;
+                particleEngine.Shrink = false;
+                particleEngine.DoGravity = false;
+                particleEngine.DoDirection = false;
+
+                particleEngine.MaxSize = 10;
+                particleEngine.MinSize = 5;
+
+                particleEngine.AngularVelocity = 1f;
+
+                particleEngine.SpreadAngle = 30f;
+
+                particleEngine.Direction = new Vector2(0, -1);
+
+                particleEngine.SpawnRect = new Rectangle(0, 0, window.Width, window.Height);
+
+                particleEngine.Angle = 0;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.NumPad1) && prevKeyboardState != keyboardState)
+            {
+                spawnRect = new Rectangle(0, 0, window.Width, window.Height / 4);
+                particleEngine.DoRect = true;
+                particleEngine.FadeOut = true;
+                particleEngine.Color = Color.Blue;
+                particleEngine.DoGravity = true;
+                particleEngine.DoDirection = true;
+                particleEngine.Direction = new Vector2(0, 1);
+                particleEngine.TTL = 250;
+                particleEngine.MaxSize = 5;
+                particleEngine.MinSize = 1;
+
             }
 
             particleEngine.EmitterLocation = mouseState.Position.ToVector2();
             particleEngine.Speed = 1f;
-            particleEngine.Angle = 180f;
+            particleEngine.Angle = 0f;
             particleEngine.SpawnRect = spawnRect;
             particleEngine.Update();
 
