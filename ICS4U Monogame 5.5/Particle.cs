@@ -27,6 +27,11 @@ namespace ICS4U_Monogame_5._5
         private bool _doGrow;
         private bool _doShrink;
 
+        private int red;
+        private int green;
+        private int blue;
+
+
         public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL, bool fadeOut, bool doGrow, bool doShrink)
         {
             _texture = texture;
@@ -43,6 +48,11 @@ namespace ICS4U_Monogame_5._5
             _doShrink = doShrink;
             _opacity = 1f;
             _initialTTL = TTL;
+
+
+            red = 100;
+            green = 0;
+            blue = 0;
         }
 
         public bool Dead
@@ -77,7 +87,23 @@ namespace ICS4U_Monogame_5._5
                     _size -= 2;
             }
 
-            
+            //_color.R += 10;
+
+            //if (_color.R >= 255)
+            //{
+            //    _color.R = 255;
+            //}
+
+            //if (_color.G >= 255)
+            //{
+            //    _color.G = 255;
+            //}
+
+            //if (_color.B >= 255)
+            //{
+            //    _color.B = 255;
+            //}
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

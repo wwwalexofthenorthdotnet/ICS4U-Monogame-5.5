@@ -258,9 +258,16 @@ namespace ICS4U_Monogame_5._5
                 particleEngine.DoGravity = false;
             }
 
+            // Spread Angle 0
+
+            if (keyboardState.IsKeyDown(Keys.L) && prevKeyboardState != keyboardState)
+            {
+                particleEngine.SpreadAngle = 0;
+            }
+
             if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
             {
-                particleEngine.Enabled = true;
+                particleEngine.Enabled = false;
                 particleEngine.Speed = 1f;
 
                 particleEngine.RandomizeColor = false;
@@ -281,9 +288,11 @@ namespace ICS4U_Monogame_5._5
 
                 particleEngine.SpreadAngle = 30f;
 
+                particleEngine.Speed = 1;
+
                 particleEngine.Direction = new Vector2(0, -1);
 
-                particleEngine.SpawnRect = new Rectangle(0, 0, window.Width, window.Height);
+                particleEngine.SpawnRect = window;
 
                 particleEngine.Angle = 0;
             }
@@ -301,12 +310,12 @@ namespace ICS4U_Monogame_5._5
                 particleEngine.MaxSize = 5;
                 particleEngine.MinSize = 1;
 
+                particleEngine.SpreadAngle = 0;
+                particleEngine.Speed = 5;
+
             }
 
             particleEngine.EmitterLocation = mouseState.Position.ToVector2();
-            particleEngine.Speed = 1f;
-            particleEngine.Angle = 0f;
-            particleEngine.SpawnRect = spawnRect;
             particleEngine.Update();
 
             if (mouseState.LeftButton == ButtonState.Pressed)
