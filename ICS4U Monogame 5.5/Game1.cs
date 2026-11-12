@@ -74,6 +74,8 @@ namespace ICS4U_Monogame_5._5
             prevKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
 
+
+
             // COLOUR CHANGER
 
             if (keyboardState.IsKeyDown(Keys.D1) && prevKeyboardState != keyboardState)
@@ -267,6 +269,8 @@ namespace ICS4U_Monogame_5._5
 
             if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
             {
+
+                particleEngine.SpawnRect = new Rectangle(0, 0, window.Width, window.Height);
                 particleEngine.Enabled = false;
                 particleEngine.Speed = 1f;
 
@@ -292,7 +296,6 @@ namespace ICS4U_Monogame_5._5
 
                 particleEngine.Direction = new Vector2(0, -1);
 
-                particleEngine.SpawnRect = window;
 
                 particleEngine.Angle = 0;
             }
@@ -312,6 +315,7 @@ namespace ICS4U_Monogame_5._5
 
                 particleEngine.SpreadAngle = 0;
                 particleEngine.Speed = 5;
+
 
             }
 

@@ -87,22 +87,7 @@ namespace ICS4U_Monogame_5._5
                     _size -= 2;
             }
 
-            //_color.R += 10;
-
-            //if (_color.R >= 255)
-            //{
-            //    _color.R = 255;
-            //}
-
-            //if (_color.G >= 255)
-            //{
-            //    _color.G = 255;
-            //}
-
-            //if (_color.B >= 255)
-            //{
-            //    _color.B = 255;
-            //}
+            _color = Color.Lerp(Color.LavenderBlush, Color.Blue, _TTL / (float)_initialTTL);
 
         }
 
