@@ -22,7 +22,8 @@ namespace ICS4U_Monogame_5._5
         private float _speed;
 
         private bool _randomizeColor;
-        private Color _color;
+        private Color _baseColor;
+        private Color _secondaryColor;
 
         private float _angle;
         private float _angularVelocity;
@@ -64,7 +65,8 @@ namespace ICS4U_Monogame_5._5
         public bool FadeOut { get { return _fadeOut; } set { _fadeOut = value; } }
         public bool Grow { get { return _doGrow; } set { _doGrow = value; } }
         public bool Shrink { get { return _doShrink; } set { _doShrink = value; } }
-        public Color Color { get { return _color; } set { _color = value; } }
+        public Color BaseColor { get { return _baseColor; } set { _baseColor = value; } }
+        public Color SecondaryColor { get { return _secondaryColor; } set { _secondaryColor = value; } }
         public float Angle { get { return _angle; } set { _angle = value; } }
         public float AngularVelocity { get { return _angularVelocity; } set { _angularVelocity = value; } }
         public int TTL { get { return _TTL; } set { _TTL = value; } }
@@ -91,7 +93,8 @@ namespace ICS4U_Monogame_5._5
             _speed = 1f;
 
             _randomizeColor = false;
-            _color = Color.White;
+            _baseColor = Color.White;
+            _secondaryColor = Color.White;
             _TTL = 40;
             _fadeOut = false;
 
@@ -135,10 +138,12 @@ namespace ICS4U_Monogame_5._5
             float angle = _angle;
             //float angularVelocity = 1f * (float)(_generator.NextDouble() * 2 - 1);
             float angularVelocity = 1f * _angularVelocity;
-            Color color = _color;
+            Color baseColor = _baseColor;
+            Color secondaryColor = _secondaryColor;
             if (_randomizeColor)
-            {
-                color = new Color((float)_generator.NextDouble(), (float)_generator.NextDouble(), (float)_generator.NextDouble());
+            { 
+                baseColor = new Color((float)_generator.NextDouble(), (float)_generator.NextDouble(), (float)_generator.NextDouble());
+                secondaryColor = baseColor;
             }
 
             bool fadeOut = _fadeOut;
@@ -156,7 +161,7 @@ namespace ICS4U_Monogame_5._5
             }
 
 
-            return new Particle(texture, position, velocity, angle, angularVelocity, color, size, TTL, fadeOut, doGrow, doShrink);
+            return new Particle(texture, position, velocity, angle, angularVelocity, baseColor, secondaryColor, size, TTL, fadeOut, doGrow, doShrink);
         }
 
         public void Update()

@@ -19,6 +19,8 @@ namespace ICS4U_Monogame_5._5
         private float _angle;
         private float _angularVelocity;
         private Color _color;
+        private Color _baseColor;
+        private Color _secondaryColor;
         private int _size;
         private int _TTL;
         private int _initialTTL;
@@ -27,12 +29,9 @@ namespace ICS4U_Monogame_5._5
         private bool _doGrow;
         private bool _doShrink;
 
-        private int red;
-        private int green;
-        private int blue;
 
 
-        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color color, int size, int TTL, bool fadeOut, bool doGrow, bool doShrink)
+        public Particle(Texture2D texture, Vector2 position, Vector2 velocity, float angle, float angularVelocity, Color baseColor, Color secondaryColor, int size, int TTL, bool fadeOut, bool doGrow, bool doShrink)
         {
             _texture = texture;
             _position = position;
@@ -40,7 +39,8 @@ namespace ICS4U_Monogame_5._5
             _velocity = velocity;
             _angle = angle;
             _angularVelocity = angularVelocity;
-            _color = color;
+            _baseColor = baseColor;
+            _secondaryColor = secondaryColor;
             _size = size;
             _TTL = TTL;
             _fadeOut = fadeOut;
@@ -48,11 +48,6 @@ namespace ICS4U_Monogame_5._5
             _doShrink = doShrink;
             _opacity = 1f;
             _initialTTL = TTL;
-
-
-            red = 100;
-            green = 0;
-            blue = 0;
         }
 
         public bool Dead
@@ -87,7 +82,7 @@ namespace ICS4U_Monogame_5._5
                     _size -= 2;
             }
 
-            _color = Color.Lerp(Color.LavenderBlush, Color.Blue, _TTL / (float)_initialTTL);
+            _color = Color.Lerp(_baseColor, _secondaryColor, 1f - (_TTL / (float)_initialTTL));
 
         }
 

@@ -75,27 +75,48 @@ namespace ICS4U_Monogame_5._5
             keyboardState = Keyboard.GetState();
 
 
+            particleEngine.SpawnRect = spawnRect;
+
 
             // COLOUR CHANGER
-
+            
             if (keyboardState.IsKeyDown(Keys.D1) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Blue;
+                particleEngine.BaseColor = Color.Blue;
             else if (keyboardState.IsKeyDown(Keys.D2) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Red;
+                particleEngine.BaseColor = Color.Red;
             else if (keyboardState.IsKeyDown(Keys.D3) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Purple;
+                particleEngine.BaseColor = Color.Purple;
             else if (keyboardState.IsKeyDown(Keys.D4) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Green;
+                particleEngine.BaseColor = Color.Green;
             else if (keyboardState.IsKeyDown(Keys.D5) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Teal;
+                particleEngine.BaseColor = Color.Teal;
             else if (keyboardState.IsKeyDown(Keys.D6) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.HotPink;
+                particleEngine.BaseColor = Color.HotPink;
             else if (keyboardState.IsKeyDown(Keys.D7) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Honeydew;
+                particleEngine.BaseColor = Color.Honeydew;
             else if (keyboardState.IsKeyDown(Keys.D8) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.Yellow;
+                particleEngine.BaseColor = Color.Yellow;
             else if (keyboardState.IsKeyDown(Keys.D0) && prevKeyboardState != keyboardState)
-                particleEngine.Color = Color.White;
+                particleEngine.BaseColor = Color.White;
+
+            if (keyboardState.IsKeyDown(Keys.F1) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Blue;
+            else if (keyboardState.IsKeyDown(Keys.F2) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Red;
+            else if (keyboardState.IsKeyDown(Keys.F3) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Purple;
+            else if (keyboardState.IsKeyDown(Keys.F4) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Green;
+            else if (keyboardState.IsKeyDown(Keys.F5) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Teal;
+            else if (keyboardState.IsKeyDown(Keys.F6) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.HotPink;
+            else if (keyboardState.IsKeyDown(Keys.F7) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Honeydew;
+            else if (keyboardState.IsKeyDown(Keys.F8) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.Yellow;
+            else if (keyboardState.IsKeyDown(Keys.F12) && prevKeyboardState != keyboardState)
+                particleEngine.SecondaryColor = Color.White;
 
             // RANDOM COLOUR TOGGLE
 
@@ -270,12 +291,13 @@ namespace ICS4U_Monogame_5._5
             if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
             {
 
-                particleEngine.SpawnRect = new Rectangle(0, 0, window.Width, window.Height);
+                spawnRect = new Rectangle(0, 0, window.Width, window.Height);
                 particleEngine.Enabled = false;
                 particleEngine.Speed = 1f;
 
                 particleEngine.RandomizeColor = false;
-                particleEngine.Color = Color.White;
+                particleEngine.BaseColor = Color.White;
+                particleEngine.SecondaryColor = Color.White;
                 particleEngine.TTL = 40;
                 particleEngine.FadeOut = false;
 
@@ -305,7 +327,8 @@ namespace ICS4U_Monogame_5._5
                 spawnRect = new Rectangle(0, 0, window.Width, window.Height / 4);
                 particleEngine.DoRect = true;
                 particleEngine.FadeOut = true;
-                particleEngine.Color = Color.Blue;
+                particleEngine.BaseColor = Color.Blue;
+                particleEngine.SecondaryColor = Color.Blue;
                 particleEngine.DoGravity = true;
                 particleEngine.DoDirection = true;
                 particleEngine.Direction = new Vector2(0, 1);
