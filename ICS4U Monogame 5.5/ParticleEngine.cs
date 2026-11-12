@@ -48,6 +48,8 @@ namespace ICS4U_Monogame_5._5
 
         private bool _doGravity;
 
+        private int _total;
+
         public bool Enabled
         {
             get { return _enabled; }
@@ -83,6 +85,8 @@ namespace ICS4U_Monogame_5._5
         public Vector2 Direction { get { return _direction; } set { _direction = value; } }
         public float SpreadAngle { get { return _spreadAngle; } set { _spreadAngle = value; } }
 
+        public int Total { get { return _total; } set { _total = value; } }
+
         public ParticleEngine(List<Texture2D> textures, Vector2 location, bool enabled)
         {
             _emitterLocation = location;
@@ -109,6 +113,8 @@ namespace ICS4U_Monogame_5._5
 
             _spreadAngle = 30f;
 
+            _total = 10;
+
             _direction = new Vector2(0, -1);
 
             _spawnRect = new Rectangle();
@@ -124,9 +130,11 @@ namespace ICS4U_Monogame_5._5
                 velocity = new Vector2(_speed * (float)(_generator.NextDouble() * 2 - 1), _speed * (float)(_generator.NextDouble() * 2 - 1));
             else if (_doDirection)
             {
+                float randspeed = _speed * (float) _generator.NextDouble();
+
                 float baseAngleRadians = (float)Math.Atan2(_direction.Y, _direction.X);
                 float spreadRadians = (float)((_generator.NextDouble() * _spreadAngle - _spreadAngle / 2.0) * (Math.PI / 180.0));
-                velocity = new Vector2(_speed * (float)Math.Cos(baseAngleRadians + spreadRadians), _speed * (float)Math.Sin((float)baseAngleRadians + spreadRadians));
+                velocity = new Vector2(randspeed * (float)Math.Cos(baseAngleRadians + spreadRadians), randspeed * (float)Math.Sin((float)baseAngleRadians + spreadRadians));
             }
             
 
@@ -168,8 +176,7 @@ namespace ICS4U_Monogame_5._5
         {
             if (_enabled)
             {
-                int total = 10;
-                for (int i = 0; i < total; i++)
+                for (int i = 0; i < _total; i++)
                 {
                     _particles.Add(GenerateNewParticle());
                 }

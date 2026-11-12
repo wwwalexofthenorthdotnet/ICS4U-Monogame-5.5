@@ -288,12 +288,27 @@ namespace ICS4U_Monogame_5._5
                 particleEngine.SpreadAngle = 0;
             }
 
+            // Total Shifter
+
+            // Spread Angle Shifter
+
+            if (scroll < 0 && keyboardState.IsKeyDown(Keys.T))
+            {
+                particleEngine.Total += 1;
+            }
+            else if (scroll > 0 && keyboardState.IsKeyDown(Keys.T) && particleEngine.Total != 0)
+            {
+                particleEngine.Total -= 1;
+            }
+
             if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
             {
 
                 spawnRect = new Rectangle(0, 0, window.Width, window.Height);
                 particleEngine.Enabled = false;
                 particleEngine.Speed = 1f;
+
+                particleEngine.Total = 10;
 
                 particleEngine.RandomizeColor = false;
                 particleEngine.BaseColor = Color.White;
@@ -325,6 +340,9 @@ namespace ICS4U_Monogame_5._5
             if (keyboardState.IsKeyDown(Keys.NumPad1) && prevKeyboardState != keyboardState)
             {
                 spawnRect = new Rectangle(0, 0, window.Width, window.Height / 4);
+
+                particleEngine.Total = 10;
+
                 particleEngine.DoRect = true;
                 particleEngine.FadeOut = true;
                 particleEngine.BaseColor = Color.Blue;
