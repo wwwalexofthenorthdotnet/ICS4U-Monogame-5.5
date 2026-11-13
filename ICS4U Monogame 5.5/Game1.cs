@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Resolvers;
 
 namespace ICS4U_Monogame_5._5
@@ -11,6 +12,7 @@ namespace ICS4U_Monogame_5._5
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private ResolutionManager _resolutionManager;
         MouseState mouseState;
         MouseState prevMouseState;
         KeyboardState keyboardState;
@@ -35,12 +37,16 @@ namespace ICS4U_Monogame_5._5
         {
             // TODO: Add your initialization logic here
 
-            window = new Rectangle(0, 0, 800, 600);
+            _resolutionManager = new ResolutionManager(1280, 720);
 
-            _graphics.PreferredBackBufferWidth = window.Width;
-            _graphics.PreferredBackBufferHeight = window.Height;
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            _graphics.IsFullScreen = false;
 
             _graphics.ApplyChanges();
+
+            window = new Rectangle(0, 0, _resolutionManager.VirtualWidth, _resolutionManager.VirtualHeight);
 
             particles = new List<Texture2D>();
 
@@ -73,6 +79,11 @@ namespace ICS4U_Monogame_5._5
             mouseState = Mouse.GetState();
             prevKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
+
+            Vector2 physicalMousePosition = new Vector2(mouseState.X, mouseState.Y);
+            Matrix resolutionMatrix = _resolutionManager.GetTransformationMatrix(GraphicsDevice);
+            Matrix inverseMatrix = Matrix.Invert(resolutionMatrix);
+            Vector2 virtualMousePosition = Vector2.Transform(physicalMousePosition, inverseMatrix);
 
 
             particleEngine.SpawnRect = spawnRect;
@@ -304,7 +315,7 @@ namespace ICS4U_Monogame_5._5
             if (keyboardState.IsKeyDown(Keys.NumPad0) && prevKeyboardState != keyboardState)
             {
 
-                spawnRect = new Rectangle(0, 0, window.Width, window.Height);
+                spawnRect = new Rectangle(0, 0, _resolutionManager.VirtualWidth, _resolutionManager.VirtualHeight);
                 particleEngine.Enabled = false;
                 particleEngine.Speed = 1f;
 
@@ -339,7 +350,7 @@ namespace ICS4U_Monogame_5._5
 
             if (keyboardState.IsKeyDown(Keys.NumPad1) && prevKeyboardState != keyboardState)
             {
-                spawnRect = new Rectangle(0, 0, window.Width, window.Height / 4);
+                spawnRect = new Rectangle(0, 0, _resolutionManager.VirtualWidth, _resolutionManager.VirtualHeight / 4);
 
                 particleEngine.Total = 10;
 
@@ -360,7 +371,7 @@ namespace ICS4U_Monogame_5._5
 
             }
 
-            particleEngine.EmitterLocation = mouseState.Position.ToVector2();
+            particleEngine.EmitterLocation = virtualMousePosition;
             particleEngine.Update();
 
             if (mouseState.LeftButton == ButtonState.Pressed)
@@ -374,10 +385,11 @@ namespace ICS4U_Monogame_5._5
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            Matrix resolutionMatrix = _resolutionManager.GetTransformationMatrix(GraphicsDevice);
 
             // TODO: Add your drawing code here
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix: resolutionMatrix, samplerState: SamplerState.PointClamp );
             particleEngine.Draw(_spriteBatch);
             _spriteBatch.End();
 
